@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect;
 from django.http import HttpResponse
+from django.contrib import messages
 from .models import Products, Categories, User, Orders, OrderItem
 from .forms import ProductForm
 
@@ -45,3 +46,13 @@ def product_update(request, id):
         form = ProductForm(instance=product)
 
     return render(request, 'products/update.html', {'form': form, 'product': product})
+
+def product_delete(request, id):
+    product = get_object_or_404(Products, id=id)
+    
+    if request.method == 'POST':
+        product.delete()
+        messages.success(request, 'Produto deletado com sucesso!')
+        return redirect('product_list')
+    
+    return render(request, 'products/delete.html', {'product': product})
