@@ -32,3 +32,16 @@ def product_create(req):
 def product_detail(request, id):
     product = get_object_or_404(Products, id=id)
     return render(request, 'products/detail.html', {'product': product})
+  
+def product_update(request, id):
+    product = get_object_or_404(Products, id=id)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product_detail', id=product.id)
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, 'products/update.html', {'form': form, 'product': product})
