@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block 'titulo' %}Lista de Produtos{% endblock %}
+
+{% block 'content' %}
+<h1>Produtos Disponíveis</h1>
+
+{% if products %}
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Categoria</th>
+                <th>Ofertas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>
+                        {% if product.offer %}
+                            Sim
+                        {% else %}
+                            Não
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Nenhum produto disponível no momento.</p>
+{% endif %}
+
+{% endblock %}
