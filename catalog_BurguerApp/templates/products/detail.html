@@ -3,33 +3,35 @@
 {% block 'titulo' %}Detalhes do Produto{% endblock %}
 
 {% block 'content' %}
-<h2>Detalhes do Produto</h2>
+<div class="container mt-4">
+    <h2>Detalhes do Produto</h2>
 
-<table>
-    <tr>
-        <th>Nome:</th>
-        <td>{{ product.name }}</td>
-    </tr>
-    <tr>
-        <th>Preço:</th>
-        <td>{{ product.price }}</td>
-    </tr>
-    <tr>
-        <th>Categoria:</th>
-        <td>{{ product.category }}</td>
-    </tr>
-    <tr>
-        <th>Oferta:</th>
-        <td>
-            {% if product.offer %}
-                Sim
-            {% else %}
-                Não
-            {% endif %}
-        </td>
-    </tr>
-</table>
-
-<a href="{% url 'product_list' %}">Voltar à Lista de Produtos</a>
-
+    <table class="table">
+        <tr>
+            <th>Nome:</th>
+            <td>{{ product.name }}</td>
+        </tr>
+        <tr>
+            <th>Preço:</th>
+            <td>R$ {{ product.price|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <th>Categoria:</th>
+            <td>{{ product.category }}</td>
+        </tr>
+        <tr>
+            <th>Oferta:</th>
+            <td>
+                {% if product.offer %}
+                <span class="badge bg-success">Sim</span>
+                {% else %}
+                <span class="badge bg-secondary">Não</span>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <a href="{% url 'product_list' %}" class="btn btn-primary">Voltar à Lista de Produtos</a>
+    <a href="{% url 'product_update' product.id %}" class="btn btn-primary">Editar</a>
+    <a href="{% url 'product_delete' product.id %}" class="btn btn-danger">Excluir</a>
+</div>
 {% endblock %}
