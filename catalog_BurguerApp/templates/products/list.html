@@ -3,37 +3,44 @@
 {% block 'titulo' %}Lista de Produtos{% endblock %}
 
 {% block 'content' %}
-<h1>Produtos Disponíveis</h1>
+<h1 class="mb-4">Produtos Disponíveis</h1>
 
 {% if products %}
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nome</th>
                 <th>Preço</th>
                 <th>Categoria</th>
                 <th>Ofertas</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             {% for product in products %}
                 <tr>
                     <td><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></td>
-                    <td>{{ product.price }}</td>
+                    <td>R$ {{ product.price|floatformat:2 }}</td>
                     <td>{{ product.category }}</td>
                     <td>
                         {% if product.offer %}
-                            Sim
+                            <span class="badge bg-success">Sim</span>
                         {% else %}
-                            Não
+                            <span class="badge bg-secondary">Não</span>
                         {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'product_update' product.id %}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="{% url 'product_delete' product.id %}" class="btn btn-sm btn-danger">Excluir</a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 {% else %}
-    <p>Nenhum produto disponível no momento.</p>
+    <p class="alert alert-info">Nenhum produto disponível no momento.</p>
 {% endif %}
+
+<a href="{% url 'product_create' %}" class="btn btn-success">Adicionar Novo Produto</a>
 
 {% endblock %}
