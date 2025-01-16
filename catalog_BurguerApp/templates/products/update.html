@@ -1,15 +1,28 @@
 {% extends "base.html" %}
 
+{% load custom_filters %}
+
 {% block 'titulo' %}Atualizar Produto{% endblock %}
 
 {% block 'content' %}
-<h2>Atualizar Produto</h2>
+<h1 class="mb-4">Atualizar Produto</h1>
 
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Salvar Alterações</button>
+    {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field|add_class:"form-control" }}
+            {% if field.help_text %}
+                <div class="form-text">{{ field.help_text }}</div>
+            {% endif %}
+            {% for error in field.errors %}
+                <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+    <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">Cancelar</a>
 </form>
 
-<a href="{% url 'product_detail' product.id %}">Cancelar</a>
 {% endblock %}
