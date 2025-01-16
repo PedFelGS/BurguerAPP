@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block 'titulo' %}Detalhes do Produto{% endblock %}
+
+{% block 'content' %}
+<h2>Detalhes do Produto</h2>
+
+<table>
+    <tr>
+        <th>Nome:</th>
+        <td>{{ product.name }}</td>
+    </tr>
+    <tr>
+        <th>Preço:</th>
+        <td>{{ product.price }}</td>
+    </tr>
+    <tr>
+        <th>Categoria:</th>
+        <td>{{ product.category }}</td>
+    </tr>
+    <tr>
+        <th>Oferta:</th>
+        <td>
+            {% if product.offer %}
+                Sim
+            {% else %}
+                Não
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<a href="{% url 'product_list' %}">Voltar à Lista de Produtos</a>
+
+{% endblock %}
