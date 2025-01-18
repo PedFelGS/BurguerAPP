@@ -30,8 +30,8 @@
             </td>
         </tr>
     </table>
-    <a href="{% url 'product_list' %}" class="btn btn-primary">Voltar à Lista de Produtos</a>
-    <a href="{% url 'product_update' product.id %}" class="btn btn-primary">Editar</a>
-    <a href="{% url 'product_delete' product.id %}" class="btn btn-danger">Excluir</a>
+    <a href="{% url 'catalog_BurguerApp:product_update' product.id %}" class="btn btn-primary">Editar</a>
+    <a href="{% url 'catalog_BurguerApp:product_delete' product.id %}" class="btn btn-danger">Excluir</a>
+    <a href="{% url 'catalog_BurguerApp:product_list' %}" class="btn btn-secondary">Voltar à Lista de Produtos</a>
 </div>
 {% endblock %}
