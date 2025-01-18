@@ -19,7 +19,7 @@
         <tbody>
             {% for product in products %}
                 <tr>
-                    <td><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></td>
+                    <td><a href="{% url 'catalog_BurguerApp:product_detail' product.id %}">{{ product.name }}</a></td>
                     <td>R$ {{ product.price|floatformat:2 }}</td>
                     <td>{{ product.category }}</td>
                     <td>
@@ -30,8 +30,8 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'product_update' product.id %}" class="btn btn-sm btn-primary">Editar</a>
-                        <a href="{% url 'product_delete' product.id %}" class="btn btn-sm btn-danger">Excluir</a>
+                        <a href="{% url 'catalog_BurguerApp:product_update' product.id %}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="{% url 'catalog_BurguerApp:product_delete' product.id %}" class="btn btn-sm btn-danger">Excluir</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -41,6 +41,6 @@
     <p class="alert alert-info">Nenhum produto disponível no momento.</p>
 {% endif %}
 
-<a href="{% url 'product_create' %}" class="btn btn-success">Adicionar Novo Produto</a>
+<a href="{% url 'catalog_BurguerApp:product_create' %}" class="btn btn-success">Adicionar Novo Produto</a>
 
 {% endblock %}
