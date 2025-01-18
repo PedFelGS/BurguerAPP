@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block 'titulo' %}Lista de Categorias{% endblock %}
+
+{% block 'content' %}
+    <h1 class="mb-4">Lista de Categorias</h1>
+    
+    {% if categories %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'catalog_BurguerApp:category_detail' category.id %}">{{ category.name }}</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'catalog_BurguerApp:category_update' category.id %}" class="btn btn-sm btn-primary">Editar</a>
+                            <a href="{% url 'catalog_BurguerApp:category_delete' category.id %}" class="btn btn-sm btn-danger">Excluir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="alert alert-info">Nenhuma categoria encontrada.</p>
+    {% endif %}
+
+    <a href="{% url 'catalog_BurguerApp:category_create' %}" class="btn btn-success">Adicionar Nova Categoria</a>
+{% endblock %}
