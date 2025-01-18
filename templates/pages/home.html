@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block 'titulo' %}Ofertas{% endblock %}
+
+{% block 'content' %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Produtos em Oferta</h1>
+
+    <div class="mb-4">
+        <form method="get" action="{% url 'home' %}">
+            <label for="category" class="form-label">Filtrar por Categoria:</label>
+            <select name="category" id="category" class="form-select" onchange="this.form.submit()">
+                <option value="">Todas as Categorias</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    
+    {% if products %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for product in products %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% if product.path %}
+                            <img src="{{ product.path }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <img src="https://via.placeholder.com/200" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text text-muted">Categoria: {{ product.category.name }}</p>
+                            <p class="card-text">Preço: R$ {{ product.price|floatformat:2 }}</p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <button class="btn btn-primary">Implementarei o carrinho ainda, porém cadastro de produtos e categorias ativo em Sistema</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="alert alert-info text-center">Nenhum produto em oferta no momento.</p>
+    {% endif %}
+</div>
+{% endblock %}
