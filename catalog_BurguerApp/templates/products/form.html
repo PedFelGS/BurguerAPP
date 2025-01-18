@@ -8,21 +8,35 @@
 <h1 class="mb-4">Criar Novo Produto</h1>
 
 <form method="POST">
-    {% csrf_token %}
-    {% for field in form %}
-        <div class="mb-3">
-            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-            {{ field|add_class:"form-control" }}
-            {% if field.help_text %}
-                <div class="form-text">{{ field.help_text }}</div>
-            {% endif %}
-            {% for error in field.errors %}
-                <div class="invalid-feedback d-block">{{ error }}</div>
-            {% endfor %}
-        </div>
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="mb-3">
+    {% if field.name == 'offer' %}
+    <div class="form-check form-switch">
+      {{ field|add_class:"form-check-input" }}
+      <label class="form-check-label" for="{{ field.id_for_label }}">
+        Disponível
+      </label>
+      {% if field.help_text %}
+      <div class="form-text">{{ field.help_text }}</div>
+      {% endif %}
+    </div>
+    {% else %}
+    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+    {{ field|add_class:"form-control" }}
+    {% if field.help_text %}
+    <div class="form-text">{{ field.help_text }}</div>
+    {% endif %}
+    {% endif %}
+    
+    {% for error in field.errors %}
+    <div class="invalid-feedback d-block">{{ error }}</div>
     {% endfor %}
-    <button type="submit" class="btn btn-primary">Criar Produto</button>
-    <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancelar</a>
+  </div>
+  {% endfor %}
+  
+  <button type="submit" class="btn btn-primary">Criar Produto</button>
+  <a href="{% url 'catalog_BurguerApp:product_list' %}" class="btn btn-secondary">Cancelar</a>
 </form>
 
 {% endblock %}
