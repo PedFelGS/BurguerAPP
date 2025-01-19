@@ -1,14 +1,20 @@
 from django.db import models
-from django.db.models import CharField, DateTimeField, AutoField, ForeignKey, DecimalField, PositiveIntegerField, BooleanField, URLField;
+from django.db.models import CharField, DateTimeField, AutoField, ForeignKey, DecimalField, PositiveIntegerField, BooleanField, URLField, ImageField;
 from auth_BurguerApp.models import User
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 
 class Categories(models.Model):
     id = AutoField(primary_key=True)
     name = CharField(max_length=255, unique=True, verbose_name='Nome da Categoria')
-    path = CharField(max_length=255, verbose_name='Caminho da Imagem')
+    image = ImageField(upload_to='post_img/categories', blank=True, null=True)
+    path =  URLField(max_length=2000, verbose_name='Caminho da Imagem', blank=True, null=True)
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
+    
+    @mark_safe
+    def figure(self):
+        return f'<img width="30px" src="/media/{self.image}">'
 
     def __str__(self):
         return self.name
@@ -25,10 +31,15 @@ class Products(models.Model):
         null=True,
         related_name="products"
         )
+    image = ImageField(upload_to='post_img/products', blank=True, null=True)
     path = URLField(max_length=2000, verbose_name='Caminho da Imagem', blank=True, null=True)
     offer = BooleanField(default=False, verbose_name='Disponibilidade')
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
+    
+    @mark_safe
+    def figure(self):
+        return f'<img width="30px" src="/media/{self.image}">'
 
     def __str__(self):
         return self.name
