@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block 'titulo' %}Ofertas{% endblock %}
 
 {% block 'content' %}
@@ -36,7 +38,9 @@
                             <p class="card-text">Preço: R$ {{ product.price|floatformat:2 }}</p>
                         </div>
                         <div class="card-footer text-center">
-                            <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">Adicionar ao Carrinho</button>
+                            <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">
+                                <i class="bi bi-cart-plus"></i> Adicionar ao Carrinho
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -46,4 +50,95 @@
         <p class="alert alert-info text-center">Nenhum produto em oferta no momento.</p>
     {% endif %}
 </div>
+
+<!-- Toast container for notifications -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Notificação</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block 'scripts' %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    const cartCountElement = document.querySelector('.cart-count');
+    const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function updateCartCount(count) {
+        cartCountElement.textContent = count;
+        cartCountElement.classList.remove('d-none');
+    }
+
+    function showToast(message, type = 'success') {
+        const toastElement = document.getElementById('liveToast');
+        const toastBody = toastElement.querySelector('.toast-body');
+        toastBody.textContent = message;
+        toastElement.classList.remove('bg-success', 'bg-danger');
+        toastElement.classList.add(type === 'success' ? 'bg-success' : 'bg-danger');
+        toast.show();
+    }
+
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            const originalText = this.innerHTML;
+            
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adicionando...';
+
+            fetch(`/add-to-cart/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    updateCartCount(data.cart_count);
+                    showToast('Produto adicionado ao carrinho!');
+                } else {
+                    showToast('Erro ao adicionar produto ao carrinho.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Erro ao adicionar produto ao carrinho.', 'error');
+            })
+            .finally(() => {
+                this.disabled = false;
+                this.innerHTML = originalText;
+            });
+        });
+    });
+});
+</script>
 {% endblock %}
