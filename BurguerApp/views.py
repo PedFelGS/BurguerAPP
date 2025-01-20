@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from catalog_BurguerApp.models import Products, Categories
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 def home(request):
     if 'carrinho' not in request.session:
         request.session['carrinho'] = []
@@ -60,3 +61,13 @@ def remove_from_cart(request, product_id):
         return redirect('view_cart')
     
     return JsonResponse({'status': 'error'}, status=400)
+
+@login_required
+def user_profile(request):
+    return render(request, 'pages/user_profile.html')
+
+def custom_page_not_found(request, exception):
+    return render(request, '404.html', {}, status=404)
+
+def custom_error(request):
+    return render(request, '500.html', {}, status=500)
