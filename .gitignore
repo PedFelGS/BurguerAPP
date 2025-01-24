@@ -2,6 +2,7 @@ Iniciar APP.txt
 txt.md
 .gitignore
 db.sqbpro
+/media
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
