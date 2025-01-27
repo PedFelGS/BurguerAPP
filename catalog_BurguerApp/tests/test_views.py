@@ -52,3 +52,59 @@ class CatalogVIEWsTest(TestCase):
         view = resolve(reverse('catalog_BurguerApp:category_delete', kwargs={'id': category_id}))
         self.assertIs(view.func, views.category_delete)
     
+
+
+
+
+
+
+
+    def test_product_list_return_status_code_302_Found(self):
+        response = self.client.get(reverse('catalog_BurguerApp:product_list'))
+        self.assertEqual(response.status_code, 302)  
+
+    def test_product_detail_return_status_code_302_Found(self):
+        product_id = 3
+        response = self.client.get(reverse('catalog_BurguerApp:product_detail', kwargs={'id': product_id}))
+        self.assertEqual(response.status_code, 302)
+
+    def test_product_create_return_status_code_302_Found(self):
+        response = self.client.get(reverse('catalog_BurguerApp:product_create'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_product_update_return_status_code_302_Found(self):
+        product_id = 42
+        response = self.client.get(reverse('catalog_BurguerApp:product_update', kwargs={'id': product_id}))
+        self.assertEqual(response.status_code, 302) 
+
+    def test_product_delete_return_status_code_302_Found(self):
+        product_id = 42
+        response = self.client.get(reverse('catalog_BurguerApp:product_delete', kwargs={'id': product_id}))
+        self.assertEqual(response.status_code, 302) 
+
+
+
+
+    def test_category_list_return_status_code_302_Found(self):
+        response = self.client.get(reverse('catalog_BurguerApp:category_list'))
+        self.assertEqual(response.status_code, 302)
+    
+    def test_category_detail_return_status_code_302_Found(self):
+        category_id = 12
+        response = self.client.get(reverse('catalog_BurguerApp:category_detail', kwargs={'id': category_id}))
+        self.assertEqual(response.status_code, 302) 
+
+    def test_category_create_return_status_code_302_Found(self):
+        response = self.client.get(reverse('catalog_BurguerApp:category_create'))
+        self.assertEqual(response.status_code, 302)  
+    
+    def test_category_update_return_status_code_302_Found(self):
+        category_id = 12
+        response = self.client.get(reverse('catalog_BurguerApp:category_update', kwargs={'id': category_id}))
+        self.assertEqual(response.status_code, 302)  
+       
+    def test_category_delete_return_status_code_302_Found(self):
+        category_id = 12
+        response = self.client.get(reverse('catalog_BurguerApp:category_delete', kwargs={'id': category_id}))
+        self.assertEqual(response.status_code, 302) 
+        
